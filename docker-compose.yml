@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  suitecrm-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: suitecrm-mcp-server:latest
+    container_name: suitecrm-mcp-server
+    restart: unless-stopped
+    environment:
+      - SUITECRM_URL=${SUITECRM_URL}
+      - SUITECRM_CLIENT_ID=${SUITECRM_CLIENT_ID}
+      - SUITECRM_CLIENT_SECRET=${SUITECRM_CLIENT_SECRET}
+      - SUITECRM_USERNAME=${SUITECRM_USERNAME}
+      - SUITECRM_PASSWORD=${SUITECRM_PASSWORD}
+    volumes:
+      - ./logs:/app/logs
+    stdin_open: true
+    tty: true
+    networks:
+      - mcp-network
+
+  # Optional: SuiteCRM instance for local development
+  suitecrm:
+    image: bitnami/suitecrm:latest
+    container_name: suitecrm-dev
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      - SUITECRM_DATABASE_HOST=suitecrm-db
+      - SUITECRM_DATABASE_USER=suitecrm
+      - SUITECRM_DATABASE_PASSWORD=suitecrm_password
+      - SUITECRM_DATABASE_NAME=suitecrm
+      - SUITECRM_USERNAME=admin
+      - SUITECRM_PASSWORD=admin123
+      - SUITECRM_EMAIL=admin@example.com
+    volumes:
+      - suitecrm_data:/bitnami/suitecrm
+    depends_on:
+      - suitecrm-db
+    networks:
+      - mcp-network
+    profiles:
+      - dev
+
+  suitecrm-db:
+    image: mariadb:10.6
+    container_name: suitecrm-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=suitecrm
+      - MYSQL_USER=suitecrm
+      - MYSQL_PASSWORD=suitecrm_password
+    volumes:
+      - suitecrm_db_data:/var/lib/mysql
+    networks:
+      - mcp-network
+    profiles:
+      - dev
+
+networks:
+  mcp-network:
+    driver: bridge
+
+volumes:
+  suitecrm_data:
+  suitecrm_db_data:
