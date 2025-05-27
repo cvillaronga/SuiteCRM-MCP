@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+            <file>suitecrm-mcp-server.php</file>
+        </include>
+        <exclude>
+            <directory>vendor</directory>
+            <directory>tests</directory>
+        </exclude>
+    </coverage>
+
+    <php>
+        <env name="SUITECRM_URL" value="http://localhost:8080"/>
+        <env name="SUITECRM_CLIENT_ID" value="test-client-id"/>
+        <env name="SUITECRM_CLIENT_SECRET" value="test-client-secret"/>
+        <env name="SUITECRM_USERNAME" value="test-user"/>
+        <env name="SUITECRM_PASSWORD" value="test-pass"/>
+    </php>
+</phpunit>
