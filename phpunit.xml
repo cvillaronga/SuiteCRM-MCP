@@ -10,15 +10,20 @@
          failOnWarning="true"
          verbose="true">
     <testsuites>
-        <testsuite name="default">
-            <directory>tests</directory>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+        <testsuite name="security">
+            <directory>tests/Security</directory>
         </testsuite>
     </testsuites>
 
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
-            <file>suitecrm-mcp-server.php</file>
         </include>
         <exclude>
             <directory>vendor</directory>
@@ -27,10 +32,11 @@
     </coverage>
 
     <php>
-        <env name="SUITECRM_URL" value="http://localhost:8080"/>
+        <env name="SUITECRM_URL" value="https://localhost"/>
         <env name="SUITECRM_CLIENT_ID" value="test-client-id"/>
         <env name="SUITECRM_CLIENT_SECRET" value="test-client-secret"/>
         <env name="SUITECRM_USERNAME" value="test-user"/>
         <env name="SUITECRM_PASSWORD" value="test-pass"/>
+        <env name="MCP_AUDIT_LOG" value="php://memory"/>
     </php>
 </phpunit>

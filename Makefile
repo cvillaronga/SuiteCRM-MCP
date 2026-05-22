@@ -16,9 +16,17 @@ help:
 install:
 	composer install
 
-# Run tests
+# Run full test suite (unit + integration + security)
 test:
 	./vendor/bin/phpunit
+
+# Run only the security-focused suite
+test-security:
+	./vendor/bin/phpunit --testsuite security
+
+# Audit Composer dependencies for known CVEs (NSA spec 9.2)
+audit:
+	composer audit
 
 # Run PHP linter
 lint:
