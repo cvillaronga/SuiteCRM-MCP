@@ -1,6 +1,6 @@
 {
   "name": "suitecrm/mcp-server",
-  "description": "Model Context Protocol (MCP) server for SuiteCRM",
+  "description": "Hardened Model Context Protocol (MCP) server for SuiteCRM, aligned with NSA MCP security guidance.",
   "type": "project",
   "license": "MIT",
   "authors": [
@@ -11,6 +11,8 @@
   ],
   "require": {
     "php": ">=7.4",
+    "ext-curl": "*",
+    "ext-json": "*",
     "react/event-loop": "^1.3",
     "react/stream": "^1.2",
     "guzzlehttp/guzzle": "^7.0",
@@ -25,13 +27,20 @@
       "SuiteCRM\\MCP\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "SuiteCRM\\MCP\\Tests\\": "tests/"
+    }
+  },
   "bin": [
     "bin/suitecrm-mcp-server"
   ],
   "scripts": {
     "start": "php suitecrm-mcp-server.php",
     "test": "phpunit",
+    "test-security": "phpunit --testsuite security",
     "lint": "phpcs --standard=PSR12 src/ suitecrm-mcp-server.php",
-    "lint-fix": "phpcbf --standard=PSR12 src/ suitecrm-mcp-server.php"
+    "lint-fix": "phpcbf --standard=PSR12 src/ suitecrm-mcp-server.php",
+    "audit": "composer audit"
   }
 }
